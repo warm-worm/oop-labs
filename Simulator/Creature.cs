@@ -98,4 +98,22 @@ public class Creature
     {
         get { return $"{Name} ({Level})"; }
     }
+    public void Go(Direction dir) //jeden kierunek
+    {
+        Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}."); //zmiana np. "Up" na "up"
+    }
+
+    public void Go(Direction[] directions) //tablica kierunkow
+    {
+        foreach (Direction dir in directions)
+        {
+            Go(dir); //pierwsza metoda Go
+        }
+    }
+
+    public void Go(string moves) //info o ruchu w stringu
+    {
+        Direction[] directions = DirectionParser.Parse(moves);
+        Go(directions); //druga metoda Go
+    }
 }
