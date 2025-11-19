@@ -5,16 +5,11 @@ public class Creature
     private string _name = "Unknown"; //wartosc domyslna name
     private int _level = 1; //wartosc domyslna level
 
-    private bool _nameInitialized = false; //czy wartosc byla juz ustawiona
-    private bool _levelInitialized = false;
-
     public string Name
     {
         get { return _name; }
-        set
+        init //ustawiamy tylko przy inicjalizacji
         {
-            if (_nameInitialized) return;
-
             string processedName = value;
 
             if (string.IsNullOrWhiteSpace(processedName)) //usuwanie spacji
@@ -43,17 +38,14 @@ public class Creature
             }
 
             _name = processedName;
-            _nameInitialized = true; //ustawienie flagi
         }
     }
 
     public int Level
     {
         get { return _level; }
-        set
+        init //ustawiamy tylko przy inicjalizacji
         {
-            if (_levelInitialized) return; //nadajemy tylko raz
-
             int processedLevel = value;
 
             if (processedLevel < 1) //1-10
@@ -66,7 +58,6 @@ public class Creature
             }
 
             _level = processedLevel;
-            _levelInitialized = true; //flaga
         }
     }
 
@@ -76,14 +67,14 @@ public class Creature
         Level = level;
     }
 
-    public Creature()
+    public Creature() //bezparametrowy
     {
 
     }
 
     public void SayHi()
     {
-        Console.WriteLine($"Hi, I am {Name}!");
+        Console.WriteLine($"Hi, I am {Name}!"); //wypisuje imie
     }
 
     public void Upgrade() //awans o jeden poziom, max 10
@@ -96,8 +87,9 @@ public class Creature
 
     public string Info
     {
-        get { return $"{Name} ({Level})"; }
+        get { return $"{Name} ({Level})"; } //info o stworku
     }
+
     public void Go(Direction dir) //jeden kierunek
     {
         Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}."); //zmiana np. "Up" na "up"
