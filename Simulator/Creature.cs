@@ -1,6 +1,6 @@
 ﻿namespace Simulator;
 
-public class Creature
+public abstract class Creature
 {
     private string _name = "Unknown"; //wartosc domyslna name
     private int _level = 1; //wartosc domyslna level
@@ -72,10 +72,7 @@ public class Creature
 
     }
 
-    public void SayHi()
-    {
-        Console.WriteLine($"Hi, I am {Name}!"); //wypisuje imie
-    }
+    public abstract void SayHi(); //metoda abstrakcyjna – implementacja w klasach pochodnych
 
     public void Upgrade() //awans o jeden poziom, max 10
     {
@@ -85,10 +82,9 @@ public class Creature
         }
     }
 
-    public string Info
-    {
-        get { return $"{Name} ({Level})"; } //info o stworku
-    }
+    public abstract int Power { get; } //abstrakcyjna właściwość – implementacja w klasach pochodnych
+
+    public abstract string Info { get; } //abstrakcyjna właściwość – implementacja w klasach pochodnych
 
     public void Go(Direction dir) //jeden kierunek
     {
@@ -107,5 +103,10 @@ public class Creature
     {
         Direction[] directions = DirectionParser.Parse(moves);
         Go(directions); //druga metoda Go
+    }
+
+    public override string ToString() //override ToString() zwracajacy typ i Info
+    {
+        return $"{GetType().Name.ToUpper()}: {Info}";
     }
 }
