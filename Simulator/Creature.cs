@@ -3,62 +3,18 @@
 public abstract class Creature
 {
     private string _name = "Unknown"; //wartosc domyslna name
-    private int _level = 1; //wartosc domyslna level
+    private int _level = 1;           //wartosc domyslna level
 
     public string Name
     {
-        get { return _name; }
-        init //ustawiamy tylko przy inicjalizacji
-        {
-            string processedName = value;
-
-            if (string.IsNullOrWhiteSpace(processedName)) //usuwanie spacji
-            {
-                processedName = "###"; //brakujace znaki
-            }
-            else
-            {
-                processedName = processedName.Trim();
-            }
-
-            if (processedName.Length > 25) //najwyzej 25 znakow
-            {
-                processedName = processedName.Substring(0, 25);
-                processedName = processedName.TrimEnd(); //uwuwanie spacji na koncu
-            }
-
-            while (processedName.Length < 3) //3 znaki min
-            {
-                processedName += "#";
-            }
-
-            if (char.IsLower(processedName[0])) //pierwsza wielka litera
-            {
-                processedName = char.ToUpper(processedName[0]) + processedName.Substring(1);
-            }
-
-            _name = processedName;
-        }
+        get => _name;
+        init => _name = Validator.Shortener(value, 3, 25, '#');
     }
 
     public int Level
     {
-        get { return _level; }
-        init //ustawiamy tylko przy inicjalizacji
-        {
-            int processedLevel = value;
-
-            if (processedLevel < 1) //1-10
-            {
-                processedLevel = 1;
-            }
-            else if (processedLevel > 10)
-            {
-                processedLevel = 10;
-            }
-
-            _level = processedLevel;
-        }
+        get => _level;
+        init => _level = Validator.Limiter(value, 1, 10);
     }
 
     public Creature(string name, int level = 1)
@@ -67,46 +23,19 @@ public abstract class Creature
         Level = level;
     }
 
-    public Creature() //bezparametrowy
-    {
+    public Creature() { }
 
+    public abstract void SayHi();
+
+    public void Upgrade()
+    {
+        if (_level < 10) _level++;
     }
 
-    public abstract void SayHi(); //metoda abstrakcyjna – implementacja w klasach pochodnych
+    public abstract int Power { get; }
+    public abstract string Info { get; }
 
-    public void Upgrade() //awans o jeden poziom, max 10
-    {
-        if (_level < 10)
-        {
-            _level++;
-        }
-    }
-
-    public abstract int Power { get; } //abstrakcyjna właściwość – implementacja w klasach pochodnych
-
-    public abstract string Info { get; } //abstrakcyjna właściwość – implementacja w klasach pochodnych
-
-    public void Go(Direction dir) //jeden kierunek
-    {
-        Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}."); //zmiana np. "Up" na "up"
-    }
-
-    public void Go(Direction[] directions) //tablica kierunkow
-    {
-        foreach (Direction dir in directions)
-        {
-            Go(dir); //pierwsza metoda Go
-        }
-    }
-
-    public void Go(string moves) //info o ruchu w stringu
-    {
-        Direction[] directions = DirectionParser.Parse(moves);
-        Go(directions); //druga metoda Go
-    }
-
-    public override string ToString() //override ToString() zwracajacy typ i Info
-    {
-        return $"{GetType().Name.ToUpper()}: {Info}";
-    }
+    public void Go(Direction dir) => Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}.");
+    public void Go(Direction[] directions) => Array.ForEach(directions, Go);
+    public void Go(string moves) => Go(DirectionParser.Parse(moves));
 }

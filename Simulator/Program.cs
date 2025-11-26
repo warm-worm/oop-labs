@@ -72,7 +72,7 @@ internal class Program
     static void TestElfsAndOrcs()
     {
         Console.WriteLine("HUNT TEST\n");
-        var o = new Orc() { Name = "Gorbag", Rage = 7 };
+        var o = new Orc(name: "Gorbag", rage: 7);
         o.SayHi();
         for (int i = 0; i < 10; i++)
         {
