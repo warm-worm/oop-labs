@@ -35,6 +35,11 @@ public abstract class Creature
     public abstract int Power { get; }
     public abstract string Info { get; }
 
+    public override string ToString()
+    {
+        return $"{GetType().Name.ToUpper()}: {Info}";
+    }
+
     public void Go(Direction dir) => Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}.");
     public void Go(Direction[] directions) => Array.ForEach(directions, Go);
     public void Go(string moves) => Go(DirectionParser.Parse(moves));

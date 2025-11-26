@@ -7,6 +7,8 @@ internal class Program
         Console.WriteLine("Starting Simulator!\n");
         Console.WriteLine("--- Testing Elfs and Orcs ---");
         TestElfsAndOrcs();
+        Console.WriteLine("\n--- Testing Objects to String ---");
+        TestObjectsToString();
         /*
         Console.WriteLine("--- Testing Creatures ---");
         TestCreatures();
@@ -100,5 +102,20 @@ internal class Program
         {
             Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
         }
+        Console.WriteLine("\nSTRING TEST\n"); // toString test, nie wiem gdzie indziej to dac
+        Console.WriteLine(o);  // ORC: Gorbag [1][7]
+        Console.WriteLine(e); // ELF: Legolas [1][4]
+    }
+
+    static void TestObjectsToString()
+    {
+        object[] myObjects = {
+        new Animals() { Description = "dogs"},
+        new Birds { Description = "  eagles ", Size = 10 },
+        new Elf("e", 15, -3),
+        new Orc("morgash", 6, 4)
+    };
+        Console.WriteLine("\nMy objects:");
+        foreach (var o in myObjects) Console.WriteLine(o);
     }
 }
