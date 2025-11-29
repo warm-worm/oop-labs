@@ -20,10 +20,11 @@ public class Orc : Creature
         if (_huntCount % 2 == 0)
             _rage = Validator.Limiter(Rage + 1, 0, 10);
 
-        Console.WriteLine($"{Name} is hunting.");
+        //Console.WriteLine($"{Name} is hunting.");
     }
 
-    public override void SayHi() => Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
+    //public override void SayHi() => Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
+    public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
 
     public override int Power => Level * 7 + Rage * 3;
     public override string Info => $"{Name} [{Level}][{Rage}]";

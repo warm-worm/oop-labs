@@ -25,7 +25,7 @@ public abstract class Creature
 
     public Creature() { }
 
-    public abstract void SayHi();
+    public abstract string Greeting();
 
     public void Upgrade()
     {
@@ -40,7 +40,20 @@ public abstract class Creature
         return $"{GetType().Name.ToUpper()}: {Info}";
     }
 
-    public void Go(Direction dir) => Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}.");
-    public void Go(Direction[] directions) => Array.ForEach(directions, Go);
-    public void Go(string moves) => Go(DirectionParser.Parse(moves));
+    //public void Go(Direction dir) => Console.WriteLine($"{Name} goes {dir.ToString().ToLower()}.");
+    string Go(Direction direction) => $"{direction.ToString().ToLower()}";
+
+    public string[] Go(Direction[] directions)
+    {
+        var result = new string[directions.Length];
+        for (int i = 0; i < directions.Length; i++)
+        {
+            result[i] = Go(directions[i]);
+        }
+        return result;
+    }
+    public string[] Go(string moves)
+    {
+        return Go(DirectionParser.Parse(moves));
+    }
 }

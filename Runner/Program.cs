@@ -1,4 +1,6 @@
-﻿namespace Simulator;
+﻿using Simulator;
+
+namespace Runner;
 
 internal class Program
 {
@@ -75,29 +77,28 @@ internal class Program
     {
         Console.WriteLine("HUNT TEST\n");
         var o = new Orc(name: "Gorbag", rage: 7);
-        o.SayHi();
+        o.Greeting();
         for (int i = 0; i < 10; i++)
         {
             o.Hunt();
-            o.SayHi();
+            o.Greeting();
         }
 
         Console.WriteLine("\nSING TEST\n");
         var e = new Elf("Legolas", agility: 2);
-        e.SayHi();
+        e.Greeting();
         for (int i = 0; i < 10; i++)
         {
             e.Sing();
-            e.SayHi();
+            e.Greeting();
         }
-
         Console.WriteLine("\nPOWER TEST\n");
         Creature[] creatures = {
         o,
         e,
         new Orc("Morgash", 3, 8),
         new Elf("Elandor", 5, 3)
-    };
+    }; 
         foreach (Creature creature in creatures)
         {
             Console.WriteLine($"{creature.Name,-15}: {creature.Power}");
@@ -106,7 +107,6 @@ internal class Program
         Console.WriteLine(o);  // ORC: Gorbag [1][7]
         Console.WriteLine(e); // ELF: Legolas [1][4]
     }
-
     static void TestObjectsToString()
     {
         object[] myObjects = {
