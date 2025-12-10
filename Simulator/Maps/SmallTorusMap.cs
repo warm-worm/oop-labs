@@ -4,32 +4,19 @@ using Simulator;
 
 public class SmallTorusMap : Map
 {
-    private readonly int _size;
-    public int Size => _size; // wlasciwosc tylko do odczytu
-
-    public SmallTorusMap(int size)
+    public SmallTorusMap(int sizeX, int sizeY) : base(sizeX, sizeY)
     {
-        if (size < 5 || size > 20) // rozmiar musi byc miedzy 5 a 20
-        {
-            throw new ArgumentOutOfRangeException(nameof(size), "Size must be between 5 and 20.");
-        }
-        _size = size;
-    }
-
-    public override bool Exist(Point p)
-    {
-        Rectangle bounds = new Rectangle(0, 0, Size - 1, Size - 1); // granice mapy
-        return bounds.Contains(p); // dla torusa tez sprawdzamy czy bazowy punkt jest w srodku
+        if (sizeX > 20) // rozmiar musi byc miedzy 5 a 20
+            throw new ArgumentOutOfRangeException(nameof(sizeX), "Size must be below 20.");
+        if (sizeY > 20) // rozmiar musi byc miedzy 5 a 20
+            throw new ArgumentOutOfRangeException(nameof(sizeY), "Size must be below 20.");
     }
 
     public override Point Next(Point p, Direction d)
     {
-        Point nextPoint = p.Next(d); // obliczamy nastepny punkt
-
-        // torus logic: zawijanie wspolrzednych po przekroczeniu granic
-        // dodanie Size, zeby uniknac ujemnych wynikow modulo, potem modulo Size, inaczej nie dziala
-        int x = (nextPoint.X + Size) % Size;
-        int y = (nextPoint.Y + Size) % Size;
+        Point next = p.Next(d); // obliczamy nastepny punkt
+        int x = (next.X + SizeX) % SizeX; // torus logic: jesli wychodzi poza mape, zawijamy na druga strone
+        int y = (next.Y + SizeY) % SizeY;
 
         return new Point(x, y);
     }
@@ -39,8 +26,8 @@ public class SmallTorusMap : Map
         Point nextPoint = p.NextDiagonal(d); // obliczamy nastepny punkt po skosie
 
         // torus logic: to samo zawijanie co wyzej
-        int x = (nextPoint.X + Size) % Size;
-        int y = (nextPoint.Y + Size) % Size;
+        int x = (nextPoint.X + SizeX) % SizeX;
+        int y = (nextPoint.Y + SizeY) % SizeY;
 
         return new Point(x, y);
     }

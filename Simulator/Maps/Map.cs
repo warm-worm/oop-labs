@@ -5,12 +5,30 @@
 /// </summary>
 public abstract class Map // klasa abstrakcyjna, baza dla innych map
 {
+    // Slownik przechowujacy stwory na polach: Klucz to Punkt, Wartosc to Lista stworow
+    private readonly Dictionary<Point, List<Creature>> _fields = new();
+
+    public readonly int SizeX; // rozmiar mapy w osi X
+    public readonly int SizeY; // rozmiar mapy w osi Y
+    public readonly Rectangle area;
+
+    protected Map(int sizeX, int sizeY) //protected - widoczny tylko dla dzieci
+    {
+        if (sizeX < 5)
+            throw new ArgumentOutOfRangeException(nameof(sizeX), "SizeX must be at greater than 5.");
+        if (sizeY < 5)
+            throw new ArgumentOutOfRangeException(nameof(sizeY), "SizeY must be at greater than 5.");
+        SizeX = sizeX;
+        SizeY = sizeY;
+        area = new Rectangle(0, 0, SizeX - 1, SizeY - 1);
+    }
+
     /// <summary>
     /// Check if give point belongs to the map.
     /// </summary>
     /// <param name="p">Point to check.</param>
     /// <returns></returns>
-    public abstract bool Exist(Point p); // musi byc zaimplementowane: czy punkt jest na mapie
+    public virtual bool Exist(Point p) => area.Contains(p); // czy punkt jest na mapie
 
     /// <summary>
     /// Next position to the point in a given direction.
@@ -28,4 +46,68 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// <param name="d">Direction.</param>
     /// <returns>Next point.</returns>
     public abstract Point NextDiagonal(Point p, Direction d); // musi byc zaimplementowane: ruch po skosie
+
+    /// <summary>
+    /// Add creature to map.
+    /// </summary>
+    /// <param name="creature">Creature to place on map</param>
+    /// <param name="p">Point for creature.</param>
+    public void Add(Creature creature, Point p)
+    {
+        if (!Exist(p)) return; // jesli punkt nie istnieje, nic nie robimy
+
+        if (!_fields.ContainsKey(p)) // jesli w tym punkcie nie ma jeszcze listy
+        {
+            _fields[p] = new List<Creature>(); // tworzymy nowa liste
+        }
+        _fields[p].Add(creature); // dodajemy stwora do listy
+    }
+
+    /// <summary>
+    /// Remove creature from map.
+    /// </summary>
+    /// <param name="creature">Creature to remove</param>
+    /// <param name="p">Point where creature is</param>
+    public void Remove(Creature creature, Point p)
+    {
+        if (!_fields.ContainsKey(p)) return; // jesli puste pole, to nic nie robimy
+
+        _fields[p].Remove(creature); // usuwamy stwora z listy
+
+        if (_fields[p].Count == 0) // jesli lista pusta
+        {
+            _fields.Remove(p); // usuwamy wpis ze slownika zeby nie zasmiecac
+        }
+    }
+
+    /// <summary>
+    /// Move creature from one point to another.
+    /// </summary>
+    public void Move(Creature creature, Point from, Point to)
+    {
+        Remove(creature, from); // zabieramy ze starego
+        Add(creature, to);      // dajemy na nowe
+    }
+
+    /// <summary>
+    /// Get List of creatures.
+    /// </summary>
+    /// <param name="p">Point to check.</param>
+    /// <returns>List of creatures at given point.</returns>
+    public List<Creature> At(Point p)
+    {
+        if (_fields.ContainsKey(p)) // jesli cos tu jest
+        {
+            return _fields[p]; // zwracamy liste
+        }
+        return new List<Creature>(); // zwracamy pusta liste zamiast nulla
+    }
+
+    /// <summary>
+    /// Get list of creatures.
+    /// </summary>
+    /// <param name="x">Point to check x coordinate</param>
+    /// <param name="y">Point to check y coordinate </param>
+    /// <returns></returns>
+    public List<Creature> At(int x, int y) => At(new Point(x, y));
 }

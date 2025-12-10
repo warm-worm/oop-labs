@@ -4,12 +4,12 @@ using System.Collections.Generic; //musi byc zeby uzyc List<Direction>
 
 public static class DirectionParser
 {
-    public static Direction[] Parse(string input) //metoda statyczna zwracajaca tablice Direction
+    public static List<Direction> Parse(string input) //metoda statyczna zwracajaca tablice Direction
     {
         var directions = new List<Direction>();
         if (input == null)
         {
-            return directions.ToArray(); //pusta tablica jesli input null
+            return directions; //pusta tablica jesli input null
         }
 
         foreach (char c in input.ToUpper()) //ignorujemy wielkosc liter
@@ -32,6 +32,6 @@ public static class DirectionParser
                     break;
             }
         }
-        return directions.ToArray();
+        return directions;
     }
 }
