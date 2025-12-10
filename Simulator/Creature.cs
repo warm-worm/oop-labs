@@ -63,6 +63,7 @@ public abstract class Creature
 
     public abstract int Power { get; }
     public abstract string Info { get; }
+    public abstract char Symbol { get; }
 
     public override string ToString()
     {
