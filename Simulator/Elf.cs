@@ -26,6 +26,7 @@ public class Elf : Creature
     //public override void SayHi() => Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.");
     public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.";
     public override int Power => Level * 8 + Agility * 2;
-    public override char Symbol => 'E'; // symbol elfa
+    public override char MapSymbol => 'E'; // symbol elfa
     public override string Info => $"{Name} [{Level}][{Agility}]";
+    public override char Symbol => MapSymbol;
 }

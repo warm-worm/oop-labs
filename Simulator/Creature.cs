@@ -2,7 +2,7 @@
 
 namespace Simulator;
 
-public abstract class Creature
+public abstract class Creature : IMappable
 {
     private Map? _map; // mapa na ktorej jest stwor
     private Point _point; // pozycja stwora
@@ -30,6 +30,7 @@ public abstract class Creature
 
     public Map? Map => _map; // wlasciwosc do odczytu mapy
     public Point Position => _point; // wlasciwosc do odczytu pozycji
+    public virtual char MapSymbol => '?'; // symbol na mapie
 
     public void InitMapAndPosition(Map map, Point startingPosition)
     {

@@ -6,7 +6,7 @@
 public abstract class Map // klasa abstrakcyjna, baza dla innych map
 {
     // Slownik przechowujacy stwory na polach: Klucz to Punkt, Wartosc to Lista stworow
-    private readonly Dictionary<Point, List<Creature>> _fields = new();
+    private readonly Dictionary<Point, List<IMappable>> _fields = new();
 
     public readonly int SizeX; // rozmiar mapy w osi X
     public readonly int SizeY; // rozmiar mapy w osi Y
@@ -15,9 +15,9 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     protected Map(int sizeX, int sizeY) //protected - widoczny tylko dla dzieci
     {
         if (sizeX < 5)
-            throw new ArgumentOutOfRangeException(nameof(sizeX), "SizeX must be at greater than 5.");
+            throw new ArgumentOutOfRangeException(nameof(sizeX), "SizeX must be greater than 5.");
         if (sizeY < 5)
-            throw new ArgumentOutOfRangeException(nameof(sizeY), "SizeY must be at greater than 5.");
+            throw new ArgumentOutOfRangeException(nameof(sizeY), "SizeY must be greater than 5.");
         SizeX = sizeX;
         SizeY = sizeY;
         area = new Rectangle(0, 0, SizeX - 1, SizeY - 1);
@@ -50,29 +50,29 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// <summary>
     /// Add creature to map.
     /// </summary>
-    /// <param name="creature">Creature to place on map</param>
+    /// <param name="mappable">Creature to place on map</param>
     /// <param name="p">Point for creature.</param>
-    public void Add(Creature creature, Point p)
+    public void Add(IMappable mappable, Point p)
     {
         if (!Exist(p)) return; // jesli punkt nie istnieje, nic nie robimy
 
         if (!_fields.ContainsKey(p)) // jesli w tym punkcie nie ma jeszcze listy
         {
-            _fields[p] = new List<Creature>(); // tworzymy nowa liste
+            _fields[p] = new List<IMappable>(); // tworzymy nowa liste
         }
-        _fields[p].Add(creature); // dodajemy stwora do listy
+        _fields[p].Add(mappable); // dodajemy stwora do listy
     }
 
     /// <summary>
     /// Remove creature from map.
     /// </summary>
-    /// <param name="creature">Creature to remove</param>
+    /// <param name="mappable">Creature to remove</param>
     /// <param name="p">Point where creature is</param>
-    public void Remove(Creature creature, Point p)
+    public void Remove(IMappable mappable, Point p)
     {
         if (!_fields.ContainsKey(p)) return; // jesli puste pole, to nic nie robimy
 
-        _fields[p].Remove(creature); // usuwamy stwora z listy
+        _fields[p].Remove(mappable); // usuwamy stwora z listy
 
         if (_fields[p].Count == 0) // jesli lista pusta
         {
@@ -83,10 +83,10 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// <summary>
     /// Move creature from one point to another.
     /// </summary>
-    public void Move(Creature creature, Point from, Point to)
+    public void Move(IMappable mappable, Point from, Point to)
     {
-        Remove(creature, from); // zabieramy ze starego
-        Add(creature, to);      // dajemy na nowe
+        Remove(mappable, from); // zabieramy ze starego
+        Add(mappable, to);      // dajemy na nowe
     }
 
     /// <summary>
@@ -94,13 +94,13 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// </summary>
     /// <param name="p">Point to check.</param>
     /// <returns>List of creatures at given point.</returns>
-    public List<Creature> At(Point p)
+    public List<IMappable> At(Point p)
     {
         if (_fields.ContainsKey(p)) // jesli cos tu jest
         {
             return _fields[p]; // zwracamy liste
         }
-        return new List<Creature>(); // zwracamy pusta liste zamiast nulla
+        return new List<IMappable>(); // zwracamy pusta liste zamiast nulla
     }
 
     /// <summary>
@@ -109,5 +109,5 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// <param name="x">Point to check x coordinate</param>
     /// <param name="y">Point to check y coordinate </param>
     /// <returns></returns>
-    public List<Creature> At(int x, int y) => At(new Point(x, y));
+    public List<IMappable>? At(int x, int y) => At(new Point(x, y));
 }

@@ -34,7 +34,7 @@ public class MapVisualizer
 
                 if (creatures.Count == 1)
                 {
-                    symbol = creatures[0].Symbol; // jeden stwor
+                    symbol = creatures[0].MapSymbol; // jeden stwor
                 }
                 else if (creatures.Count > 1)
                 {
