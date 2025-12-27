@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SimWeb</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <b>SimWeb</b>
+            <nav>
+                <a class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Privacy" ? "active" : "")"
+                   asp-area="" asp-page="/Privacy">Informacje</a>
+                <a class="@(ViewContext.RouteData.Values["page"]?.ToString() == "/Index" ? "active" : "")"
+                   asp-area="" asp-page="/Index">Symulacja</a>
+            </nav>
+        </div>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+</body>
+</html>
