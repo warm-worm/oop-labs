@@ -2,6 +2,7 @@
 
 namespace Simulator;
 
+// dodajemy implementacje interfejsu
 public abstract class Creature : IMappable
 {
     private Map? _map; // mapa na ktorej jest stwor
@@ -30,7 +31,9 @@ public abstract class Creature : IMappable
 
     public Map? Map => _map; // wlasciwosc do odczytu mapy
     public Point Position => _point; // wlasciwosc do odczytu pozycji
-    public virtual char MapSymbol => '?'; // symbol na mapie
+
+    // symbol abstrakcyjny, bo ork i elf maja inny (wymagany przez IMappable)
+    public abstract char MapSymbol { get; }
 
     public void InitMapAndPosition(Map map, Point startingPosition)
     {
@@ -64,14 +67,13 @@ public abstract class Creature : IMappable
 
     public abstract int Power { get; }
     public abstract string Info { get; }
-    public abstract char Symbol { get; }
 
     public override string ToString()
     {
         return $"{GetType().Name.ToUpper()}: {Info}";
     }
 
-    // pojedynczy ruch
+    // pojedynczy ruch (implementacja z interfejsu)
     public void Go(Direction direction)
     {
         if (_map == null) return; // jak nie ma mapy to nie idzie

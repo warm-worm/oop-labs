@@ -23,11 +23,9 @@ public class Orc : Creature
         //Console.WriteLine($"{Name} is hunting.");
     }
 
-    //public override void SayHi() => Console.WriteLine($"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.");
     public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my rage is {Rage}.";
-
     public override int Power => Level * 7 + Rage * 3;
-    public override char MapSymbol => 'O'; // symbol orka
-    public override char Symbol => MapSymbol;
     public override string Info => $"{Name} [{Level}][{Rage}]";
+
+    public override char MapSymbol => 'O';
 }

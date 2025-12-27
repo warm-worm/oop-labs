@@ -1,11 +1,13 @@
 ﻿namespace Simulator.Maps;
 
+using Simulator;
+
 /// <summary>
 /// Map of points.
 /// </summary>
 public abstract class Map // klasa abstrakcyjna, baza dla innych map
 {
-    // Slownik przechowujacy stwory na polach: Klucz to Punkt, Wartosc to Lista stworow
+    // slownik przechowujacy obiekty na polach: Klucz to Punkt, Wartosc to Lista obiektow IMappable
     private readonly Dictionary<Point, List<IMappable>> _fields = new();
 
     public readonly int SizeX; // rozmiar mapy w osi X
@@ -60,7 +62,7 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
         {
             _fields[p] = new List<IMappable>(); // tworzymy nowa liste
         }
-        _fields[p].Add(mappable); // dodajemy stwora do listy
+        _fields[p].Add(mappable); // dodajemy obiekt do listy
     }
 
     /// <summary>
@@ -72,7 +74,7 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     {
         if (!_fields.ContainsKey(p)) return; // jesli puste pole, to nic nie robimy
 
-        _fields[p].Remove(mappable); // usuwamy stwora z listy
+        _fields[p].Remove(mappable); // usuwamy obiekt z listy
 
         if (_fields[p].Count == 0) // jesli lista pusta
         {
@@ -109,5 +111,5 @@ public abstract class Map // klasa abstrakcyjna, baza dla innych map
     /// <param name="x">Point to check x coordinate</param>
     /// <param name="y">Point to check y coordinate </param>
     /// <returns></returns>
-    public List<IMappable>? At(int x, int y) => At(new Point(x, y));
+    public List<IMappable> At(int x, int y) => At(new Point(x, y));
 }

@@ -29,16 +29,17 @@ public class MapVisualizer
             Console.Write(Box.Vertical);
             for (int x = 0; x < _map.SizeX; x++)
             {
-                var creatures = _map.At(x, y); // pobieramy stwory
+                // ZMIANA: teraz to lista IMappable, wiec zmienna mappables
+                var mappables = _map.At(x, y);
                 char symbol = ' '; // puste pole
 
-                if (creatures.Count == 1)
+                if (mappables.Count == 1)
                 {
-                    symbol = creatures[0].MapSymbol; // jeden stwor
+                    symbol = mappables[0].MapSymbol; // jeden obiekt
                 }
-                else if (creatures.Count > 1)
+                else if (mappables.Count > 1)
                 {
-                    symbol = 'X'; // wiele stworow
+                    symbol = 'X'; // wiele obiektow
                 }
 
                 Console.Write($"{symbol}{Box.Vertical}");
