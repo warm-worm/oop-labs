@@ -7,6 +7,9 @@ using Simulator.Maps;
 
 public class IndexModel : PageModel
 {
+    // cache symulacji - statyczny, zeby nie liczyc tego samego co chwile
+    private static SimulationLog? _cachedLog;
+
     // przechowujemy biezaca ture (z logu) do wyswietlenia
     public TurnLog CurrentTurn { get; private set; } = default!; //zeby sie nie prulo
 
@@ -25,7 +28,7 @@ public class IndexModel : PageModel
         // pobieramy indeks tury z sesji (jesli nie ma, to 0)
         TurnIndex = HttpContext.Session.GetInt32("TurnIndex") ?? 0;
 
-        // przygotowujemy symulacje
+        // przygotowujemy symulacje (teraz wezmie z cache jak jest)
         var simulationLog = GetSimulationLog();
 
         // zabezpieczamy zakresy (zeby nie wyjsc poza liste)
@@ -45,7 +48,7 @@ public class IndexModel : PageModel
         // pobieramy aktualny stan
         int current = HttpContext.Session.GetInt32("TurnIndex") ?? 0;
 
-        // musimy wiedziec ile jest max tur, wiec tworzymy log na chwile
+        // musimy wiedziec ile jest max tur, wiec tworzymy log na chwile (albo bierzemy z cache)
         var log = GetSimulationLog();
         int max = log.TurnLogs.Count - 1;
 
@@ -69,6 +72,9 @@ public class IndexModel : PageModel
     // metoda pomocnicza tworzaca konkretna symulacje
     private SimulationLog GetSimulationLog()
     {
+        // jak juz mamy policzone to zwracamy gotowca
+        if (_cachedLog != null) return _cachedLog;
+
         SmallTorusMap map = new(8, 6);
         List<IMappable> mappables = [
             new Orc("Gorbag"),
@@ -88,7 +94,9 @@ public class IndexModel : PageModel
 
         Simulation simulation = new(map, mappables, points, moves);
 
-        // log (symulacja wykona sie w tle cala od razu)
-        return new SimulationLog(simulation);
+        // log (symulacja wykona sie w tle cala od razu) i zapisujemy do statica
+        _cachedLog = new SimulationLog(simulation);
+        
+        return _cachedLog;
     }
 }
