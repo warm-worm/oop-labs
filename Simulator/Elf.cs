@@ -11,8 +11,12 @@ public class Elf : Creature
         init => _agility = Validator.Limiter(value, 0, 10);
     }
 
-    public Elf() : base() { }
-    public Elf(string name, int level = 1, int agility = 1) : base(name, level) => Agility = agility;
+    public Elf() : this("Elf") { }
+    public Elf(string name, int level = 1, int agility = 1) : base(name, level)
+    {
+        Agility = agility;
+        CalculatePower = () => Level * 8 + Agility * 2;
+    }
 
     public void Sing()
     {
@@ -24,7 +28,6 @@ public class Elf : Creature
     }
 
     public override string Greeting() => $"Hi, I'm {Name}, my level is {Level}, my agility is {Agility}.";
-    public override int Power => Level * 8 + Agility * 2;
     public override string Info => $"{Name} [{Level}][{Agility}]";
 
     public override char MapSymbol => 'E';

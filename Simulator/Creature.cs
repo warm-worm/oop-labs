@@ -65,7 +65,10 @@ public abstract class Creature : IMappable
         if (_level < 10) _level++;
     }
 
-    public abstract int Power { get; }
+
+    public Func<int> CalculatePower { get; set; } = () => 0;
+    public int Power => CalculatePower();
+
     public abstract string Info { get; }
 
     public override string ToString()
